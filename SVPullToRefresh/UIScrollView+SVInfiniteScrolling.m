@@ -97,10 +97,7 @@ UIEdgeInsets scrollViewOriginalContentInsets;
       if (!self.infiniteScrollingView.isObserving) {
         [self addObserver:self.infiniteScrollingView forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
         [self addObserver:self.infiniteScrollingView forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
-        [self.infiniteScrollingView setScrollViewContentInsetForInfiniteScrolling];
         self.infiniteScrollingView.isObserving = YES;
-          
-        [self.infiniteScrollingView setNeedsLayout];
         self.infiniteScrollingView.frame = CGRectMake(0, self.contentSize.height, self.infiniteScrollingView.bounds.size.width, SVInfiniteScrollingViewHeight);
       }
     }
@@ -284,6 +281,7 @@ UIEdgeInsets scrollViewOriginalContentInsets;
         
         switch (newState) {
             case SVInfiniteScrollingStateStopped:
+                [self resetScrollViewContentInset];
                 [self.activityIndicatorView stopAnimating];
                 break;
                 
@@ -292,6 +290,7 @@ UIEdgeInsets scrollViewOriginalContentInsets;
                 break;
                 
             case SVInfiniteScrollingStateLoading:
+                [self setScrollViewContentInsetForInfiniteScrolling];
                 [self.activityIndicatorView startAnimating];
                 break;
         }
